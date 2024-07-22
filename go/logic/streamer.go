@@ -140,7 +140,7 @@ func (this *EventsStreamer) GetReconnectBinlogCoordinates() *mysql.BinlogCoordin
 
 // readCurrentBinlogCoordinates reads master status from hooked server
 func (this *EventsStreamer) readCurrentBinlogCoordinates() error {
-	query := `show /* gh-ost readCurrentBinlogCoordinates */ master status`
+	query := `show master status`
 	foundMasterStatus := false
 	err := sqlutils.QueryRowsMap(this.db, query, func(m sqlutils.RowMap) error {
 		this.initialBinlogCoordinates = &mysql.BinlogCoordinates{

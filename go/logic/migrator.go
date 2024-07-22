@@ -851,8 +851,11 @@ func (this *Migrator) initiateInspector() (err error) {
 	} else if this.migrationContext.InspectorIsAlsoApplier() && !this.migrationContext.AllowedRunningOnMaster {
 		return fmt.Errorf("It seems like this migration attempt to run directly on master. Preferably it would be executed on a replica (and this reduces load from the master). To proceed please provide --allow-on-master. Inspector config=%+v, applier config=%+v", this.migrationContext.InspectorConnectionConfig, this.migrationContext.ApplierConnectionConfig)
 	}
-	if err := this.inspector.validateLogSlaveUpdates(); err != nil {
-		return err
+
+	if !this.migrationContext.OceanBase {
+		if err := this.inspector.validateLogSlaveUpdates(); err != nil {
+			return err
+		}
 	}
 
 	return nil
